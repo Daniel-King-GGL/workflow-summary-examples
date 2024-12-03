@@ -28,7 +28,5 @@ jobs:
       - name: Publish test results to job summary
         if: always()
         run: |
-          echo "## Test Results" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          cat ./test-results/test_results.html >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "## Test Results" >> $GITHUB_STEP_SUMMARY 
+          cat ./test-results/test_results.html >> $GITHUB_STEP_SUMMARY 
