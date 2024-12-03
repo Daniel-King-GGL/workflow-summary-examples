@@ -5,11 +5,30 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: [linux]
+    runs-on: [ubuntu-latest]
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        uses: actions/checkout@v4
 
-      - name: Build and test
-        run: dotnet test
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+  
+      - name: Restore dependencies
+        run: dotnet restore
+  
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Test
+        run: dotnet test --logger "trx;LogFileName=test_results.trx" --results-directory ./test-results
+
+      - name: Publish test results to job summary
+        if: always()
+        run: |
+          echo "## Test Results" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat ./test-results/test_results.trx >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
