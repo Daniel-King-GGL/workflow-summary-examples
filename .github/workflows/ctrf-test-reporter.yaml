@@ -30,10 +30,7 @@ jobs:
 
       - name: Run CTRF reporter
         if: always()
-        run: dotnet tool run DotnetCtrfJsonReporter \
-          -p "test-results/test_results.trx" \
-          -f "test_results.json" \
-          -d "test-results"
+        run: dotnet tool run DotnetCtrfJsonReporter -p "test-results/test_results.trx" -f "test_results.json" -d "test-results"
 
       - name: Run CTRF annotations
         if: always()
