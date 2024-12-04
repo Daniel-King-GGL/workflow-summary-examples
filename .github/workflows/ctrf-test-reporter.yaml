@@ -1,0 +1,39 @@
+name: Test ctrf-test-reporter
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: [ubuntu-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+
+      - name: Setup ctrf reporter
+        run: dotnet tool install DotnetCtrfJsonReporter --local
+  
+      - name: Restore dependencies
+        run: dotnet restore
+  
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Test
+        run: dotnet test --logger "trx;LogFileName=test_results.trx" --results-directory ./test-results
+
+      - name: Run CTRF annotations
+        run: dotnet tool run DotnetCtrfJsonReporter \
+          -p "test-results/test_results.trx" \
+          -f "test_results.json" \
+          -d "test-results"
+
+      - name: Run CTRF annotations
+        run: npx github-actions-ctrf test-results/test_results.json
+        if: always()
