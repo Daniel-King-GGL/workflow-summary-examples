@@ -1,0 +1,32 @@
+name: Test test-summary
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: [ubuntu-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+  
+      - name: Restore dependencies
+        run: dotnet restore
+  
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Test
+        run: dotnet test --logger "junit;LogFileName=test_results.xml" --results-directory ./test-results
+
+      - name: Test Report
+        uses: test-summary/action@v2
+        if: always() 
+        with:
+          paths: test-results/test_results.xml
