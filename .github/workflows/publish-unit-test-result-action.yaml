@@ -12,6 +12,7 @@ jobs:
       contents: read
       issues: read
       checks: write
+      pull-requests: write
 
     steps:
       - name: Checkout code
@@ -36,5 +37,3 @@ jobs:
         if: always() 
         with:
           files: test-results/test_results.trx
-          time_unit: milliseconds
-          report_suite_logs: info
