@@ -15,11 +15,20 @@ public sealed class PrimeServiceTest
     }
 
     [TestMethod]
-    public void TestIsPrime_InputIs2_ReturnFalse()
+    public void TestIsPrime_InputIs2_ReturnTrue()
     {
         var primeService = new PrimeService();
         bool result = primeService.IsPrime(2);
 
-        Assert.IsFalse(result, "2 should not be prime");
+        Assert.IsTrue(result, "2 should be prime");
+    }
+
+    [TestMethod]
+    public void TestIsPrime_InputIs3_ReturnTrue()
+    {
+        var primeService = new PrimeService();
+        bool result = primeService.IsPrime(3);
+
+        Assert.IsTrue(result, "3 should be prime");
     }
 }
