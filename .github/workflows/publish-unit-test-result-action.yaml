@@ -35,3 +35,5 @@ jobs:
         if: always() 
         with:
           files: test-results/test_results.trx
+          time_unit: milliseconds
+          report_suite_logs: info
